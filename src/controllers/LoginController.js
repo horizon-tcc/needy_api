@@ -4,21 +4,26 @@ module.exports = {
     async validate(req, res) {
         const { email, senha } = req.body
 
-        if(!(email && senha))
-            return res.status(400).json({ error: 'Login inválido!' })
+        if(!(email && senha)) {
+            res.status(400)
+            return res.json({ error: 'Login inválido!' })
+        }
 
-        const id = await database('tbUsuario')
-                                    .where({
-                                        emailUsuario: email,
-                                        senhaUsuario: senha
-                                    })
-                                    .select('idUsuario')
-                                    .first()
+        try {
+            const { idUsuario } = await database('tbUsuario')
+                                        .where({
+                                            emailUsuario: email,
+                                            senhaUsuario: senha
+                                        })
+                                        .select('idUsuario')
+                                        .first()
+            return res.json( { success: true, idUsuario })
         
-        if(!id)
-            return res.status(404).json({ error: 'Login inválido!' })
-
-        return res.json(id)
+        } catch(err) {
+            console.error(err)
+            res.status(404)
+            return res.json({ success: false, error: 'Login inválido!' })
+        }
                                     
     }
 }
