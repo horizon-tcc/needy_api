@@ -1,5 +1,5 @@
 const database = require('../database/database')
-const { dateFormat } = require('../lib/dateFormat')
+const { dateFormat } = require('../utils/dateFormat')
 
 module.exports = {
     async index(req, res) { 

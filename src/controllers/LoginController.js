@@ -1,4 +1,5 @@
 const database = require('../database/database')
+const Token = require('../utils/jwt')
 
 module.exports = {
     async validate(req, res) {
@@ -17,13 +18,20 @@ module.exports = {
                                         })
                                         .select('idUsuario')
                                         .first()
-            return res.json( { success: true, idUsuario })
-        
-        } catch(err) {
+            try {
+                const token = await Token.generate({ idUsuario })
+                return res.json({ token })
+            } catch (err) {
+                console.error(err)
+                res.status(500)
+                return res.json({ error: 'Falha ao gerar o token.' })
+            }
+
+        } catch (err) {
             console.error(err)
             res.status(404)
-            return res.json({ success: false, error: 'Login inválido!' })
+            return res.json({ error: 'Login inválido!' })
         }
-                                    
+                                   
     }
 }
