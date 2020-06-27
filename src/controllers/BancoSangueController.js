@@ -2,22 +2,24 @@ const database = require('../database/database')
 const Token = require('../utils/jwt')
 
 module.exports = {
-    async indexAll(req, res) {
-        
-        const [count] = await database('tbBancoSangue').count()
-        const result = await database('tbBancoSangue').select('*')
+  async indexAll(req, res) {
 
-        res.header('X-Total-Count', count['count(*)'])
-        return res.json(result)
-    },
+    const [count] = await database('tbBancoSangue').count()
+    const result = await database('tbBancoSangue').select('*')
 
-    async index(req, res) {
-        const { id } = req.params
-        const result = await database('tbBancoSangue')
-                                .where('idBancoSangue', id)
-                                .select('*')
-                                .first()
-        
-        return res.json(result)
-    }
+    res.header('X-Total-Count', count['count(*)'])
+    return res.json(result)
+  },
+
+  async index(req, res) {
+    const {
+      id
+    } = req.params
+    const result = await database('tbBancoSangue')
+      .where('idBancoSangue', id)
+      .select('*')
+      .first()
+
+    return res.json(result)
+  }
 }

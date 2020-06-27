@@ -1,11 +1,13 @@
 const routes = require('express').Router()
 const database = require('./database/database')
-
+const multer = require('multer')
+const multerconf = require('./config/multer')
+const path = require('path')
 
 // Middlewares
 
-const tokenValidate = require('./middlewares/tokenValidate')
-routes.use(tokenValidate)
+// const tokenValidate = require('./middlewares/tokenValidate')
+// routes.use(tokenValidate)
 
 
 // Controllers
@@ -21,6 +23,15 @@ routes.get('/bancos/:id', BancoSangueController.index)
 
 routes.get('/doadores/:id', DoadoresController.index)
 
+routes.post('/upload', multer(multerconf).single('image'), (req, res) => {
+  return res.json(req.body)
+})
+
+
+routes.get('/download', (req, res) => {
+  const file = path.join(__dirname, `../tmp/uploads/${req.body.filename}`)
+  res.download(file)
+})
 
 // API Services
 
