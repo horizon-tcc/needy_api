@@ -9,12 +9,12 @@ const path = require('path')
 const tokenValidate = require('./middlewares/tokenValidate')
 routes.use(tokenValidate)
 
-
 // Controllers
 
 const LoginController = require('./controllers/LoginController')
 const BancoSangueController = require('./controllers/BancoSangueController')
 const DoadoresController = require('./controllers/DoadoresController')
+
 
 routes.post('/login', LoginController.validate)
 
