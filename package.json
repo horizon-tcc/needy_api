@@ -4,8 +4,9 @@
   "description": "Needy Web Service",
   "main": "src/index.js",
   "scripts": {
+    "start": "node src/index.js",
     "dev": "nodemon src/index.js",
-    "start": "node src/index.js"
+    "test": "jest src/tests"
   },
   "author": "Horizon",
   "license": "ISC",
@@ -20,6 +21,7 @@
     "nodemailer": "^6.4.6"
   },
   "devDependencies": {
+    "jest": "^26.1.0",
     "nodemon": "^2.0.2"
   }
 }
