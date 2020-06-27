@@ -6,8 +6,8 @@ const path = require('path')
 
 // Middlewares
 
-// const tokenValidate = require('./middlewares/tokenValidate')
-// routes.use(tokenValidate)
+const tokenValidate = require('./middlewares/tokenValidate')
+routes.use(tokenValidate)
 
 
 // Controllers
@@ -24,6 +24,7 @@ routes.get('/bancos/:id', BancoSangueController.index)
 routes.get('/doadores/:id', DoadoresController.index)
 
 routes.post('/upload', multer(multerconf).single('image'), (req, res) => {
+  // TODO: transformar o retorno da rota /upload em retorno imediato
   return res.json(req.body)
 })
 
