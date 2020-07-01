@@ -1,5 +1,4 @@
 const database = require('../database/database')
-const Token = require('../utils/jwt')
 
 module.exports = {
   async indexAll(req, res) {

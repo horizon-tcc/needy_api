@@ -1,5 +1,5 @@
 const database = require('../database/database')
-const Token = require('../utils/jwt')
+const Token = require('../utils/jwt-promise')
 
 module.exports = {
   async validate(req, res) {

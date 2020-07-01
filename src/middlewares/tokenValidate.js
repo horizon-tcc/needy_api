@@ -1,9 +1,16 @@
-const Token = require('../utils/jwt')
+const Token = require('../utils/jwt-promise')
 
 module.exports = async (req, res, next) => {
 
-  if (req.path == '/login')
+  // Gambiarra temporariamente permanente
+  const allowedRoutesWithoutToken = [
+    '/login',
+    '/imagens'
+  ]
+
+  if (allowedRoutesWithoutToken.find(route => route == req.path))
     return next();
+  //
 
   const authHeader = req.headers.authorization
 
@@ -14,7 +21,7 @@ module.exports = async (req, res, next) => {
 
   const parts = authHeader.split(' ')
 
-  if (!parts.length === 2)
+  if (!parts.length == 2)
     return res.status(401).json({
       error: 'Token error'
     })
@@ -32,6 +39,7 @@ module.exports = async (req, res, next) => {
     req.body.idUsuario = id
     return next()
   } catch (err) {
+    console.log(err)
     return res.status(401).json({
       error: 'Token invalid'
     })

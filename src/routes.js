@@ -1,7 +1,6 @@
 const routes = require('express').Router()
-const database = require('./database/database')
 const multer = require('multer')
-const multerconf = require('./config/multer')
+const multerconfig = require('./config/multer')
 const path = require('path')
 
 // Middlewares
@@ -23,16 +22,9 @@ routes.get('/bancos/:id', BancoSangueController.index)
 
 routes.get('/doadores/:id', DoadoresController.index)
 
-routes.post('/upload', multer(multerconf).single('image'), (req, res) => {
-  // TODO: transformar o retorno da rota /upload em retorno imediato
-  return res.json(req.body)
-})
-
-
-routes.get('/download', (req, res) => {
-  const file = path.join(__dirname, `../tmp/uploads/${req.body.filename}`)
-  res.download(file)
-})
+routes.post('/imagens', multer(multerconfig).single('image'),
+ (req, res) => res.json({ sucess: true })
+)
 
 // API Services
 
