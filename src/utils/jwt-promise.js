@@ -19,7 +19,7 @@ const legalize = (token) => (
     if (!token)
       reject(false)
 
-    JWT.verify(token, 'miguelboiolinho', function (err, decoded) {
+    JWT.verify(token, process.env.JWT_SECRET_KEY, function (err, decoded) {
       if (err)
         reject({
           error: err
