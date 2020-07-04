@@ -1,43 +1,34 @@
-const database = require('../database/database')
-const {
-  dateFormat
-} = require('../utils/dateFormat')
+const database = require("../database/database");
+const { dateFormat } = require("../utils/dateFormat");
 
 module.exports = {
   async index(req, res) {
-    const {
-      id
-    } = req.params
+    const { id } = req.params;
 
-    const result = await database('tbDoador')
-      .where('idUsuario', id)
-      .join('tbResponsavel', {
-        'tbResponsavel.idResponsavel': 'tbDoador.idResponsavel'
+    const result = await database("tbDoador")
+      .where("idUsuario", id)
+      .join("tbSexo", {
+        "tbSexo.idSexo": "tbDoador.idSexo",
       })
-      .join('tbSexo', {
-        'tbSexo.idSexo': 'tbDoador.idSexo'
+      .join("tbFatorRh", {
+        "tbFatorRh.idFatorRh": "tbDoador.idFatorRh",
       })
-      .join('tbFatorRh', {
-        'tbFatorRh.idFatorRh': 'tbDoador.idFatorRh'
-      })
-      .join('tbTipoSanguineo', {
-        'tbTipoSanguineo.idTipoSanguineo': 'tbDoador.idTipoSanguineo'
+      .join("tbTipoSanguineo", {
+        "tbTipoSanguineo.idTipoSanguineo": "tbDoador.idTipoSanguineo",
       })
       .select([
-        'tbDoador.*',
-        'tbResponsavel.nomeResponsavel',
-        'tbResponsavel.cpfResponsavel',
-        'tbResponsavel.rgResponsavel',
-        'tbResponsavel.dataNascimentoResponsavel',
-        'tbSexo.descricaoSexo',
-        'tbFatorRh.descricaoFatorRh',
-        'tbTipoSanguineo.descricaoTipoSanguineo'
+        "tbDoador.*",
+        "tbSexo.descricaoSexo",
+        "tbFatorRh.descricaoFatorRh",
+        "tbTipoSanguineo.descricaoTipoSanguineo",
       ])
-      .first()
+      .first();
 
-    result.dataNascimentoResponsavel = await dateFormat(result.dataNascimentoResponsavel)
-    result.dataNascimentoDoador = await dateFormat(result.dataNascimentoDoador)
+    result.dataNascimentoResponsavel = dateFormat(
+      result.dataNascimentoResponsavel
+    );
+    result.dataNascimentoDoador = dateFormat(result.dataNascimentoDoador);
 
-    return res.json(result)
-  }
-}
+    return res.json(result);
+  },
+};
