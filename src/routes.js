@@ -20,7 +20,9 @@ routes.post("/login", LoginController.validate);
 routes.get("/bancos", BancoSangueController.indexAll);
 routes.get("/bancos/:id", BancoSangueController.index);
 
+routes.get("/doadores", DoadoresController.indexAll);
 routes.get("/doadores/:id", DoadoresController.index);
+
 routes.get("/responsavel/:id", ResponsavelController.index);
 
 routes.post("/imagens", multer(multerconfig).single("image"), (req, res) =>

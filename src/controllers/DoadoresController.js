@@ -31,4 +31,9 @@ module.exports = {
 
     return res.json(result);
   },
+
+  async indexAll(req, res) {
+    const result = await database("tbDoador").select("*");
+    return res.status(200).json(result);
+  },
 };
