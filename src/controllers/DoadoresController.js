@@ -5,7 +5,7 @@ module.exports = {
   async index(req, res) {
     const { id } = req.params;
 
-    const result = await database("tbDoador")
+    let result = await database("tbDoador")
       .where("idUsuario", id)
       .join("tbSexo", {
         "tbSexo.idSexo": "tbDoador.idSexo",
@@ -24,12 +24,15 @@ module.exports = {
       ])
       .first();
 
-    result.dataNascimentoResponsavel = dateFormat(
-      result.dataNascimentoResponsavel
-    );
+    let numeroDoador = await database("tbTelefoneDoador")
+      .where("idDoador", id)
+      .select("numeroTelefoneDoador");
+
     result.dataNascimentoDoador = dateFormat(result.dataNascimentoDoador);
 
-    return res.json(result);
+    result.telefones = numeroDoador;
+
+    return res.status(200).json(result);
   },
 
   async indexAll(req, res) {
