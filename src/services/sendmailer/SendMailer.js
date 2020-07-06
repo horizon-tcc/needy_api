@@ -12,21 +12,20 @@ module.exports = {
       }
     })
 
-    const remetenteEmail = (req.body.remetente) ?
+    const remetenteEmail = (req.body.remetenteEmail) ?
       req.body.remetenteEmail : process.env.SENDMAILER_USER
 
     const remetenteNome = (req.body.remetenteNome) ?
       req.body.remetenteNome : 'Horizon'
 
-
     const email = `<strong> Nome: ${ remetenteNome } </strong> <br>
                        <strong> E-mail: ${ remetenteEmail } </strong> <br>
-                       <article> ${ req.body.texto } </article>`
+                       <article> ${ req.body.mensagem } </article>`
 
 
     transporter.sendMail({
       from: `Needy <${process.env.SENDMAILER_USER}>`,
-      to: req.body.para,
+      to: req.body.destinatario,
       subject: req.body.assunto,
       html: email
     }).then(message => {
