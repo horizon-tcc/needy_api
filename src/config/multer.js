@@ -1,19 +1,30 @@
 const multer = require('multer')
 const path = require('path')
 const crypto = require('crypto')
+const database = require('../database/database')
 
 module.exports = {
   dest: path.resolve(__dirname, '..', '..', 'tmp', 'uploads'),
   storage: multer.diskStorage({
     destination: (req, file, cb) => {
-      cb(null, path.resolve(__dirname, '..', '..', 'tmp', 'uploads'))
+      return cb(null, path.resolve(__dirname, '..', '..', 'tmp', 'uploads'))
     },
     filename: (req, file, cb) => {
       crypto.randomBytes(16, (err, hash) => {
-        if (err) cb(err)
+        if (err)
+          return cb(err, false)
 
-        const fileName = `${hash.toString('hex')}-${file.originalname}`
-        cb(null, fileName)
+        const fileName =
+          `${ hash.toString('hex') + path.extname(file.originalname) }`
+
+        database('tbUsuario')
+          .pluck('fotoUsuario')
+          .then(results => {
+            if (results.indexOf(fileName) != -1)
+              return cb(new Error('Filename generate error! Try again.'), false)
+          })
+
+        return cb(null, fileName)
       })
     }
   }),
@@ -30,8 +41,11 @@ module.exports = {
     ]
 
     if (allowedMimes.includes(file.mimetype))
-      cb(null, true)
-    else
-      cb(new Error('Tipo de arquivo inválido.'))
+      return cb(null, true)
+    else {
+      res.status(415)
+      return cb(new Error('Invalid file type.'), false)
+    }
   }
 }
+

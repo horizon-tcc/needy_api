@@ -1,6 +1,4 @@
 const routes = require('express').Router()
-const multer = require('multer')
-const multerconfig = require('./config/multer')
 const path = require('path')
 
 // Middlewares
@@ -14,6 +12,7 @@ const LoginController = require('./controllers/LoginController')
 const BancoSangueController = require('./controllers/BancoSangueController')
 const DoadoresController = require('./controllers/DoadoresController')
 const ResponsavelController = require('./controllers/ResponsavelController')
+const ImagensController = require('./controllers/ImagensController')
 const DoacaoController = require('./controllers/DoacaoController')
 
 // Routes
@@ -30,9 +29,7 @@ routes.get('/doadores/:id', DoadoresController.index)
 
 routes.get('/responsavel/:id', ResponsavelController.index)
 
-routes.post('/imagens', multer(multerconfig).single('image'), (req, res) =>
-  res.json({ sucess: true })
-)
+routes.post('/imagens', ImagensController.upload)
 
 // API Services
 
