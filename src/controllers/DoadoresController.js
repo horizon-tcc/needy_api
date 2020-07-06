@@ -10,7 +10,7 @@ module.exports = {
     } = req.params
 
     const result = await database('tbDoador')
-      .where('idUsuario', id)
+      .where('tbDoador.idUsuario', id)
       .join('tbSexo', {
         'tbSexo.idSexo': 'tbDoador.idSexo',
       })
@@ -20,15 +20,17 @@ module.exports = {
       .join('tbTipoSanguineo', {
         'tbTipoSanguineo.idTipoSanguineo': 'tbDoador.idTipoSanguineo',
       })
-      .join('tbTelefoneDoador', {
-        'tbTelefoneDoador.idDoador': 'tbDoador.idDoador'
+      .join('tbUsuario', {
+        'tbUsuario.idUsuario': 'tbDoador.idUsuario'
       })
       .select([
         'tbDoador.*',
         'tbSexo.descricaoSexo',
         'tbFatorRh.descricaoFatorRh',
         'tbTipoSanguineo.descricaoTipoSanguineo',
-        'tbTelefoneDoador.numeroTelefoneDoador'
+        'tbUsuario.emailUsuario',
+        'tbUsuario.fotoUsuario',
+        'tbUsuario.statusUsuario'
       ])
       .first()
 
@@ -45,7 +47,27 @@ module.exports = {
 
   async indexAll(req, res) {
     const result = await database('tbDoador')
-      .select('*')
+      .join('tbSexo', {
+        'tbSexo.idSexo': 'tbDoador.idSexo',
+      })
+      .join('tbFatorRh', {
+        'tbFatorRh.idFatorRh': 'tbDoador.idFatorRh',
+      })
+      .join('tbTipoSanguineo', {
+        'tbTipoSanguineo.idTipoSanguineo': 'tbDoador.idTipoSanguineo',
+      })
+      .join('tbUsuario', {
+        'tbUsuario.idUsuario': 'tbDoador.idUsuario'
+      })
+      .select([
+        'tbDoador.*',
+        'tbSexo.descricaoSexo',
+        'tbFatorRh.descricaoFatorRh',
+        'tbTipoSanguineo.descricaoTipoSanguineo',
+        'tbUsuario.emailUsuario',
+        'tbUsuario.fotoUsuario',
+        'tbUsuario.statusUsuario'
+      ])
 
     for (const doador of result) {
 
@@ -57,7 +79,6 @@ module.exports = {
       doador.dataNascimentoDoador = dateFormat(doador.dataNascimentoDoador)
     }
 
-    console.log(result)
     return res.status(200).json(result)
   },
 }
