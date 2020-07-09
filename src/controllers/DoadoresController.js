@@ -1,16 +1,11 @@
 const database = require('../database/database')
-const {
-  dateFormat
-} = require('../utils/dateFormat')
+const { dateFormat } = require('../utils/dateFormat')
 
 module.exports = {
   async index(req, res) {
-    const {
-      id
-    } = req.params
 
-    const result = await database('tbDoador')
-      .where('tbDoador.idUsuario', id)
+    const doador = await database('tbDoador')
+      .where('tbDoador.idUsuario', req.idUsuario)
       .join('tbSexo', {
         'tbSexo.idSexo': 'tbDoador.idSexo',
       })
@@ -35,50 +30,13 @@ module.exports = {
       .first()
 
     const phoneNumbers = await database('tbTelefoneDoador')
-      .where('idDoador', id)
+      .where('tbTelefoneDoador.idDoador', 1)
       .pluck('tbTelefoneDoador.numeroTelefoneDoador')
 
-    result.numeroTelefoneDoador = phoneNumbers
-    result.dataNascimentoDoador = dateFormat(result.dataNascimentoDoador)
+    doador.numeroTelefoneDoador = phoneNumbers
+    doador.dataNascimentoDoador = dateFormat(doador.dataNascimentoDoador)
 
 
-    return res.status(200).json(result)
-  },
-
-  async indexAll(req, res) {
-    const result = await database('tbDoador')
-      .join('tbSexo', {
-        'tbSexo.idSexo': 'tbDoador.idSexo',
-      })
-      .join('tbFatorRh', {
-        'tbFatorRh.idFatorRh': 'tbDoador.idFatorRh',
-      })
-      .join('tbTipoSanguineo', {
-        'tbTipoSanguineo.idTipoSanguineo': 'tbDoador.idTipoSanguineo',
-      })
-      .join('tbUsuario', {
-        'tbUsuario.idUsuario': 'tbDoador.idUsuario'
-      })
-      .select([
-        'tbDoador.*',
-        'tbSexo.descricaoSexo',
-        'tbFatorRh.descricaoFatorRh',
-        'tbTipoSanguineo.descricaoTipoSanguineo',
-        'tbUsuario.emailUsuario',
-        'tbUsuario.fotoUsuario',
-        'tbUsuario.statusUsuario'
-      ])
-
-    for (const doador of result) {
-
-      const phoneNumbers = await database('tbTelefoneDoador')
-        .where('idDoador', doador.idDoador)
-        .pluck('tbTelefoneDoador.numeroTelefoneDoador')
-
-      doador.numeroTelefoneDoador = phoneNumbers
-      doador.dataNascimentoDoador = dateFormat(doador.dataNascimentoDoador)
-    }
-
-    return res.status(200).json(result)
-  },
+    return res.status(200).json(doador)
+  }
 }

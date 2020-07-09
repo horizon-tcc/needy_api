@@ -2,7 +2,7 @@ const Token = require('../utils/jwt-promise')
 
 module.exports = async (req, res, next) => {
 
-  // Gambiarra temporariamente permanente /^\/imagens\/\w+\.\w+$/
+  // Gambiarra temporariamente permanente
   const allowedRoutesWithoutToken = [
     '/login',
     '/imagens',
@@ -13,7 +13,6 @@ module.exports = async (req, res, next) => {
     /^\/imagens\/\w+\.\w+$/.test(req.path)
     ) return next()
 
-  console.log(req.path)
   const authHeader = req.headers.authorization
 
   if (!authHeader)
@@ -37,8 +36,8 @@ module.exports = async (req, res, next) => {
 
 
   try {
-    const id = await Token.legalize(token)
-    req.body.idUsuario = id
+    const { idUsuario } = await Token.legalize(token)
+    req.idUsuario = idUsuario
     return next()
   } catch (err) {
     console.log(err)

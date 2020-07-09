@@ -3,20 +3,30 @@ const { dateFormat } = require('../utils/dateFormat')
 
 module.exports = {
   async index(req, res) {
-    const { id } = req.params
+    // const { id } = req.params
 
-    const result = await database('tbResponsavel')
-      .where('idResponsavel', id)
-      .select('*')
+    const id = await database('tbDoador')
+      .where('idUsuario', req.idUsuario)
+      .select('idResponsavel')
       .first()
 
-    const phoneNumbers = await database('tbTelefoneResponsavel')
-      .where('idResponsavel', id)
-      .pluck('numeroTelefoneResponsavel')
+    if(id) {
+      const result = await database('tbResponsavel')
+        .where('idResponsavel', id)
+        .select('*')
+        .first()
 
-    result.numeroTelefoneResponsavel = phoneNumbers
-    result.dataNascimentoResponsavel = dateFormat(result.dataNascimentoResponsavel)
+      const phoneNumbers = await database('tbTelefoneResponsavel')
+        .where('idResponsavel', id)
+        .pluck('numeroTelefoneResponsavel')
 
-    return res.status(200).json(result)
+      result.numeroTelefoneResponsavel = phoneNumbers
+      result.dataNascimentoResponsavel = dateFormat(result.dataNascimentoResponsavel)
+
+      return res.status(200).json(result)
+    } else {
+      res.status(404).json({ error: 'This donor don\'t have a responsible' })
+    }
+
   },
 }
