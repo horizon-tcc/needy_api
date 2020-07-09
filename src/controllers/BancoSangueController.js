@@ -1,4 +1,6 @@
 const database = require('../database/database')
+const { getCoords } = require('../utils/geocoding')
+
 
 module.exports = {
   async indexAll(req, res) {
@@ -20,7 +22,7 @@ module.exports = {
 
   async index(req, res) {
     const { id } = req.params
-    const result = await database('tbBancoSangue')
+    const bancoSangue = await database('tbBancoSangue')
       .where('idBancoSangue', id)
       .select('*')
       .first()
@@ -29,8 +31,9 @@ module.exports = {
       .where('idBancoSangue', id)
       .pluck('numeroTelefoneBanco')
 
-    result.numeroTelefoneBanco = phoneNumbers
+      bancoSangue.coords = await getCoords('01323130', 1041)
+    bancoSangue.numeroTelefoneBanco = phoneNumbers
 
-    return res.json(result)
+    return res.json(bancoSangue)
   }
 }
