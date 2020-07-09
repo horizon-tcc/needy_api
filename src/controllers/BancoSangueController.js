@@ -7,22 +7,24 @@ module.exports = {
     const [count] = await database('tbBancoSangue').count()
     res.header('X-Total-Count', count['count(*)'])
 
-    const result = await database('tbBancoSangue').select('*')
+    const bancos = await database('tbBancoSangue').select('*')
 
-    for(const bancoSangue of result) {
+    for(const banco of bancos) {
       const phoneNumbers = await database('tbTelefoneBancoSangue')
-        .where('idBancoSangue', bancoSangue.idBancoSangue)
+        .where('idBancoSangue', banco.idBancoSangue)
         .pluck('numeroTelefoneBanco')
 
-      bancoSangue.numeroTelefoneBanco = phoneNumbers
+      banco.numeroTelefoneBanco = phoneNumbers
+      banco.coords =
+      await getCoords(banco.cepBancoSangue, banco.numeroEndBancoSangue)
     }
 
-    return res.json(result)
+    return res.json(bancos)
   },
 
   async index(req, res) {
     const { id } = req.params
-    const bancoSangue = await database('tbBancoSangue')
+    const banco = await database('tbBancoSangue')
       .where('idBancoSangue', id)
       .select('*')
       .first()
@@ -31,9 +33,11 @@ module.exports = {
       .where('idBancoSangue', id)
       .pluck('numeroTelefoneBanco')
 
-      bancoSangue.coords = await getCoords('01323130', 1041)
-    bancoSangue.numeroTelefoneBanco = phoneNumbers
+    banco.coords =
+    await getCoords(banco.cepBancoSangue, banco.numeroEndBancoSangue)
 
-    return res.json(bancoSangue)
+    banco.numeroTelefoneBanco = phoneNumbers
+
+    return res.json(banco)
   }
 }
