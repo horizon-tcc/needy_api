@@ -1,24 +1,27 @@
-const NodeGeocoder = require('node-geocoder')
+const axios = require('axios')
 const cep = require('cep-promise')
 
-const geocoderOptions = {
-  provider: 'google',
-  apiKey: process.env.GOOGLE_API_KEY,
-  formatter: null
+async function getCoords(addrCEP, addrNumber) {
+  const addr = await cep(addrCEP)
+
+  const addrFormatted = `${addr.street},
+                         ${addrNumber},
+                         ${addr.neighborhood},
+                         ${addr.city}`
+
+  const res = await axios({
+    method: 'GET',
+    url: 'https://maps.googleapis.com/maps/api/geocode/json',
+    params: {
+      key: process.env.GOOGLE_API_KEY,
+      sensor: false,
+      address: addrFormatted
+    }
+  })
+
+  return (res.data.results[0].geometry.location)
 }
-const geocoder = NodeGeocoder(geocoderOptions)
 
 module.exports = {
-  async getCoords(addressCEP, addressNumber) {
-    const { street, neighborhood, city } = await cep(addressCEP)
-
-    const [{ latitude, longitude }] = await geocoder.geocode({
-      address: `${street}, ${addressNumber}`,
-      zipcode: addressCEP,
-      country: 'Brazil',
-      city: city
-    })
-
-    return { latitude, longitude }
-  }
+  getCoords
 }
