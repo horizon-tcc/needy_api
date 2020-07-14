@@ -14,6 +14,6 @@ app.use(cors())
 app.use(routes)
 
 app.use('/imagens',
- express.static(path.resolve(__dirname, '..', 'tmp', 'uploads')))
+ express.static(path.resolve(__dirname, '..', 'uploads')))
 
 app.listen(process.env.PORT || 4000)
