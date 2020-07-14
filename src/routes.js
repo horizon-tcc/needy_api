@@ -22,9 +22,9 @@ routes.post('/login', LoginController.validate)
 routes.get('/bancos', BancoSangueController.indexAll)
 routes.get('/bancos/:id', BancoSangueController.index)
 
-// routes.get('/doacao/:idDoacao/:idDoador', DoacaoController.index) TO REFACT
-
 routes.get('/doador', DoadoresController.index)
+routes.put('/doador', DoadoresController.update)
+
 
 routes.get('/responsavel', ResponsavelController.index)
 

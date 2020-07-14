@@ -7,8 +7,8 @@ const multerMiddleware = multer(multerConfig).single('image')
 module.exports = {
   upload(req, res) {
 
-    if (!req.query.idUsuario)
-      return res.status(400)
+    if (!req.idUsuario)
+      return res.status(400).end()
 
     multerMiddleware(req, res, err => {
       if (err instanceof multer.MulterError)
@@ -25,7 +25,7 @@ module.exports = {
       if (req.file.filename) {
 
         database('tbUsuario')
-          .where('idUsuario', req.query.idUsuario)
+          .where('idUsuario', req.idUsuario)
           .update({
             fotoUsuario: req.file.filename
           })

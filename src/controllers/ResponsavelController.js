@@ -3,7 +3,6 @@ const { dateFormat } = require('../utils/dateFormat')
 
 module.exports = {
   async index(req, res) {
-    // const { id } = req.params
 
     const id = await database('tbDoador')
       .where('idUsuario', req.idUsuario)

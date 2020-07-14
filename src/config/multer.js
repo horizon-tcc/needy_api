@@ -4,10 +4,10 @@ const crypto = require('crypto')
 const database = require('../database/database')
 
 module.exports = {
-  dest: path.resolve(__dirname, '..', '..', 'tmp', 'uploads'),
+  dest: path.resolve(__dirname, '..', '..', 'uploads'),
   storage: multer.diskStorage({
     destination: (req, file, cb) => {
-      return cb(null, path.resolve(__dirname, '..', '..', 'tmp', 'uploads'))
+      return cb(null, path.resolve(__dirname, '..', '..', 'uploads'))
     },
     filename: (req, file, cb) => {
       crypto.randomBytes(16, (err, hash) => {
@@ -48,4 +48,3 @@ module.exports = {
     }
   }
 }
-

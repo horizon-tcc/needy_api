@@ -2,16 +2,16 @@ const Token = require('../utils/jwt-promise')
 
 module.exports = async (req, res, next) => {
 
-  // Gambiarra temporariamente permanente
+// Gambiarra temporariamente permanente
   const allowedRoutesWithoutToken = [
     '/login',
-    '/imagens',
   ]
 
   if (
     allowedRoutesWithoutToken.find(route => route == req.path) ||
-    /^\/imagens\/\w+\.\w+$/.test(req.path)
-    ) return next()
+    /^\/imagens\/.+$/.test(req.path)
+  ) return next()
+//
 
   const authHeader = req.headers.authorization
 

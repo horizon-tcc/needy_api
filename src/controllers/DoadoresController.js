@@ -1,5 +1,6 @@
 const database = require('../database/database')
 const { dateFormat } = require('../utils/dateFormat')
+const isValidPass = require('../utils/validations/password')
 
 module.exports = {
   async index(req, res) {
@@ -19,7 +20,21 @@ module.exports = {
         'tbUsuario.idUsuario': 'tbDoador.idUsuario'
       })
       .select([
-        'tbDoador.*',
+        // 'tbDoador.*',
+        'tbDoador.idDoador',
+        'tbDoador.nomeDoador',
+        'tbDoador.dataNascimentoDoador',
+        'tbDoador.cpfDoador',
+        'tbDoador.rgDoador',
+        'tbDoador.logradouroDoador',
+        'tbDoador.bairroDoador',
+        'tbDoador.cepDoador',
+        'tbDoador.numeroEndDoador',
+        'tbDoador.complementoEndDoador',
+        'tbDoador.cidadeDoador',
+        'tbDoador.ufDoador',
+        'tbDoador.idUsuario',
+        'tbDoador.statusDoador',//
         'tbSexo.descricaoSexo',
         'tbFatorRh.descricaoFatorRh',
         'tbTipoSanguineo.descricaoTipoSanguineo',
@@ -36,7 +51,27 @@ module.exports = {
     doador.numeroTelefoneDoador = phoneNumbers
     doador.dataNascimentoDoador = dateFormat(doador.dataNascimentoDoador)
 
-
     return res.status(200).json(doador)
+  },
+
+  async update(req, res) {
+
+    if(!isValidPass(req.body.novaSenha))
+      return res.status(400).json({ error: 'Password malformatted!' })
+
+    database('tbUsuario')
+      .where('tbUsuario.idUsuario', req.idUsuario)
+      .update({
+        senhaUsuario: req.body.novaSenha
+      })
+      .then(() => {
+        res.status(200)
+        res.json({ success: true })
+      })
+      .catch(err => {
+        console.log(err)
+        res.status(400)
+        return res.json({ error: err.message })
+      })
   }
 }
