@@ -7,15 +7,15 @@ const isValidPass = require('../utils/validations/password')
 module.exports = {
   async index(req, res) {
 
-    const {
-      idDoador
-    } = await database('tbDoador')
-      .where('tbDoador.idUsuario', req.idUsuario)
-      .select('idDoador')
-      .first()
+    // const {
+    //   idDoador
+    // } = await database('tbDoador')
+    //   .where('tbDoador.idUsuario', req.idUsuario)
+    //   .select('idDoador')
+    //   .first()
 
     const doador = await database('tbDoador')
-      .where('tbDoador.idDoador', idDoador)
+      .where('tbDoador.idDoador', req.idDoador)
       .join('tbSexo', {
         'tbSexo.idSexo': 'tbDoador.idSexo',
       })
@@ -53,7 +53,7 @@ module.exports = {
       .first()
 
     const phoneNumbers = await database('tbTelefoneDoador')
-      .where('tbTelefoneDoador.idDoador', idDoador)
+      .where('tbTelefoneDoador.idDoador', req.idDoador)
       .pluck('tbTelefoneDoador.numeroTelefoneDoador')
 
     doador.numeroTelefoneDoador = phoneNumbers
@@ -93,15 +93,15 @@ module.exports = {
         senhaUsuario: req.body.novaSenha
       })
 
-       const {
-      idDoador
-    } = await database('tbDoador')
-      .where('tbDoador.idUsuario', req.idUsuario)
-      .select('idDoador')
-      .first()
+    //    const {
+    //   idDoador
+    // } = await database('tbDoador')
+    //   .where('tbDoador.idUsuario', req.idUsuario)
+    //   .select('idDoador')
+    //   .first()
 
     const doador = await database('tbDoador')
-      .where('tbDoador.idDoador', idDoador)
+      .where('tbDoador.idDoador', req.idDoador)
       .join('tbSexo', {
         'tbSexo.idSexo': 'tbDoador.idSexo',
       })
@@ -139,7 +139,7 @@ module.exports = {
       .first()
 
     const phoneNumbers = await database('tbTelefoneDoador')
-      .where('tbTelefoneDoador.idDoador', idDoador)
+      .where('tbTelefoneDoador.idDoador', reqidDoador)
       .pluck('tbTelefoneDoador.numeroTelefoneDoador')
 
     doador.numeroTelefoneDoador = phoneNumbers

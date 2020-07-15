@@ -1,4 +1,5 @@
 const Token = require('../utils/jwt-promise')
+const database = require('../database/database')
 
 module.exports = async (req, res, next) => {
 
@@ -38,6 +39,11 @@ module.exports = async (req, res, next) => {
   try {
     const { idUsuario } = await Token.legalize(token)
     req.idUsuario = idUsuario
+    const { idDoador } = await database('tbDoador')
+      .where('tbDoador.idUsuario', idUsuario)
+      .select('idDoador')
+      .first()
+    req.idDoador = idDoador
     return next()
   } catch (err) {
     console.log(err)

@@ -16,4 +16,4 @@ app.use(routes)
 app.use('/imagens',
  express.static(path.resolve(__dirname, '..', 'uploads')))
 
-app.listen(process.env.PORT || 4000)
+app.listen(process.env.PORT || 6000)

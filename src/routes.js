@@ -25,6 +25,8 @@ routes.get('/bancos/:id', BancoSangueController.index)
 routes.get('/doador', DoadoresController.index)
 routes.put('/doador', DoadoresController.update)
 
+routes.get('/doacoes', DoacaoController.indexAll)
+
 
 routes.get('/responsavel', ResponsavelController.index)
 
