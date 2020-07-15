@@ -1,5 +1,4 @@
 const database = require("../database/database")
-const DatePtBR = require('date-pt-br')
 const { dateFormat } = require('../utils/dateFormat')
 
 module.exports = {
