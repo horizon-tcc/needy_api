@@ -1,5 +1,6 @@
 const database = require("../database/database")
 const DatePtBR = require('date-pt-br')
+const { dateFormat } = require('../utils/dateFormat')
 
 module.exports = {
   async indexAll(req, res) {
@@ -24,31 +25,86 @@ module.exports = {
         'tbResultadoDoacao.descricaoResultadoDoacao',
         'tbTipoDoacao.descricaoTipoDoacao',
         'tbDoacao.pesoDoadorDoacao',
+        'tbUnidadeMedida.descricaoUnidadeMedida',
         'tbDoacao.totalDoacao',
         'tbDoacao.dataDoacao',
-        'tbUnidadeMedida.descricaoUnidadeMedida',
         'tbDoacao.statusDoacao'
       ])
       .where('tbDoacao.idDoador', req.idDoador)
       .orderBy('tbDoacao.dataDoacao', 'desc')
 
-    const doacoesFormatted = doacoes.map(doacao => {
-      let PORRA = new DatePtBR(doacao.dataDoacao)
-      doacao.dataDoacao = PORRA.getDate()
+      for(const doacao of doacoes) {
+        let date = dateFormat(doacao.dataDoacao)
+        doacao.dataDoacao = date
 
-      let month = PORRA.getMonth()
-      month = month.substr(0, 3)
-      let dateFormatted = `${PORRA.getDay()}/${month}`
-      doacao.dataDoacaoFormatted = dateFormatted
+        const months = [
+          'jan',
+          'mar',
+          'abr',
+          'mai',
+          'jun',
+          'jul',
+          'ago',
+          'set',
+          'out',
+          'nov',
+          'dez'
+        ]
 
-      if(doacao.descricaoUnidadeMedida === 'Mililitro (ml)') {
-        doacao.totalDoacao = 400 / 1000
-        doacao.descricaoUnidadeMedida = 'Litros (l)'
+        let month = date.split('/')[1]
+        let monthFormatted = undefined
+        switch(month) {
+          case '01':
+            monthFormatted = 'jan'
+            break
+          case '02':
+            monthFormatted = 'fev'
+            break
+          case '03':
+            monthFormatted = 'mar'
+            break
+          case '04':
+            monthFormatted = 'abr'
+            break
+          case '05':
+            monthFormatted = 'mai'
+            break
+          case '06':
+            monthFormatted = 'jun'
+            break
+          case '07':
+            monthFormatted = 'jul'
+            break
+          case '08':
+            monthFormatted = 'ago'
+            break
+          case '09':
+            monthFormatted = 'set'
+            break
+          case '10':
+            monthFormatted = 'out'
+            break
+          case '11':
+            monthFormatted = 'nov'
+            break
+          case '12' :
+            monthFormatted = 'dez'
+            break
+        }
+
+        let dateFormatted = date.split('/')
+        dateFormatted.pop()
+        dateFormatted[1] = monthFormatted
+
+        doacao.dataDoacaoFormatted = `${dateFormatted[0]}/${dateFormatted[1]}`
+
+        if(doacao.descricaoUnidadeMedida === 'Mililitro (ml)') {
+          doacao.totalDoacao = 400 / 1000
+          doacao.descricaoUnidadeMedida = 'Litros (l)'
+        }
       }
 
-      return doacao
-    })
 
-    return res.status(200).json(doacoesFormatted)
+    return res.status(200).json(doacoes)
   }
 }
