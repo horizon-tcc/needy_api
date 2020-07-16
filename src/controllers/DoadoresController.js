@@ -7,13 +7,6 @@ const isValidPass = require('../utils/validations/password')
 module.exports = {
   async index(req, res) {
 
-    // const {
-    //   idDoador
-    // } = await database('tbDoador')
-    //   .where('tbDoador.idUsuario', req.idUsuario)
-    //   .select('idDoador')
-    //   .first()
-
     const doador = await database('tbDoador')
       .where('tbDoador.idDoador', req.idDoador)
       .join('tbSexo', {
@@ -63,7 +56,6 @@ module.exports = {
   },
 
   async update(req, res) {
-
     async function changeStatusFirstOpenApp(req) {
       const {
         statusDoador
@@ -92,13 +84,6 @@ module.exports = {
       .update({
         senhaUsuario: req.body.novaSenha
       })
-
-    //    const {
-    //   idDoador
-    // } = await database('tbDoador')
-    //   .where('tbDoador.idUsuario', req.idUsuario)
-    //   .select('idDoador')
-    //   .first()
 
     const doador = await database('tbDoador')
       .where('tbDoador.idDoador', req.idDoador)
@@ -139,7 +124,7 @@ module.exports = {
       .first()
 
     const phoneNumbers = await database('tbTelefoneDoador')
-      .where('tbTelefoneDoador.idDoador', reqidDoador)
+      .where('tbTelefoneDoador.idDoador', req.idDoador)
       .pluck('tbTelefoneDoador.numeroTelefoneDoador')
 
     doador.numeroTelefoneDoador = phoneNumbers
