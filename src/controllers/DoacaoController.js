@@ -19,10 +19,13 @@ module.exports = {
       .leftJoin('tbUnidadeMedida', {
         'tbDoacao.idUnidadeMedida': 'tbUnidadeMedida.idUnidadeMedida'
       })
+      .join('tbBancoSangue', {
+        'tbDoacao.idBancoSangue': 'tbBancoSangue.idBancoSangue'
+      })
       .select([
         'tbDoacao.idDoacao',
         'tbDoacao.horaDoacao',
-        'tbDoacao.idBancoSangue',
+        'tbBancoSangue.nomeBancoSangue',
         'tbMaterialDoado.descricaoMaterialDoado',
         'tbResultadoDoacao.descricaoResultadoDoacao',
         'tbTipoDoacao.descricaoTipoDoacao',
