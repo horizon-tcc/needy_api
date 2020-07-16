@@ -54,7 +54,8 @@ module.exports = {
 
       const percent = Math.floor(diffDays / BLOODRELOAD_DAYS * 100)
 
-      doacao.bloodReloadPercent = (percent > 100) ? 100 + '%' : percent + '%'
+      doacao.bloodReloadPercentFormatted = (percent > 100) ? 100 + '%' : percent + '%'
+      doacao.bloodReloadPercent = percent / 100
       //
 
       let date = dateFormat(doacao.dataDoacao)
