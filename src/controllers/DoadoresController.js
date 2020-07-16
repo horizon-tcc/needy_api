@@ -39,6 +39,7 @@ module.exports = {
         'tbSexo.descricaoSexo',
         'tbFatorRh.descricaoFatorRh',
         'tbTipoSanguineo.descricaoTipoSanguineo',
+        'tbDoador.idResponsavel',
         'tbUsuario.emailUsuario',
         'tbUsuario.fotoUsuario',
         'tbUsuario.statusUsuario'
@@ -117,6 +118,7 @@ module.exports = {
         'tbSexo.descricaoSexo',
         'tbFatorRh.descricaoFatorRh',
         'tbTipoSanguineo.descricaoTipoSanguineo',
+        'tbDoador.idResponsavel',
         'tbUsuario.emailUsuario',
         'tbUsuario.fotoUsuario',
         'tbUsuario.statusUsuario'
