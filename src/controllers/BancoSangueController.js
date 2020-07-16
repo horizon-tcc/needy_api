@@ -30,6 +30,18 @@ module.exports = {
           'tbHorarioFuncionamentoBancoSangue.horarioFechamento'
         ])
 
+      for (let horario of horarios) {
+        let time = horario.horarioAbertura.split(':')
+        time.pop()
+        let timeFormatted = `${time[0]}:${time[1]}`
+        horario.horarioAbertura = timeFormatted
+
+        time = horario.horarioFechamento.split(':')
+        time.pop()
+        timeFormatted = `${time[0]}:${time[1]}`
+        horario.horarioFechamento = timeFormatted
+      }
+
       banco.horarioFuncionamento = horarios
       banco.numeroTelefoneBanco = phoneNumbers
       banco.coords =
@@ -62,6 +74,18 @@ module.exports = {
         'tbHorarioFuncionamentoBancoSangue.horarioAbertura',
         'tbHorarioFuncionamentoBancoSangue.horarioFechamento'
       ])
+
+    for (let horario of horarios) {
+      let time = horario.horarioAbertura.split(':')
+      time.pop()
+      let timeFormatted = `${time[0]}:${time[1]}`
+      horario.horarioAbertura = timeFormatted
+
+      time = horario.horarioFechamento.split(':')
+      time.pop()
+      timeFormatted = `${time[0]}:${time[1]}`
+      horario.horarioFechamento = timeFormatted
+    }
 
     banco.horarioFuncionamento = horarios
     banco.coords =
