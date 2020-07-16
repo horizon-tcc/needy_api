@@ -130,10 +130,11 @@ module.exports = {
         doacao.descricaoUnidadeMedida = 'Litros (l)'
       }
 
-      totalLitrosDoados += doacao.totalDoacao.toFixed(1)
+      totalLitrosDoados += doacao.totalDoacao
 
     }
 
+    totalLitrosDoados = totalLitrosDoados.toFixed(1)
 
     return res.status(200).json({ totalLitrosDoados, doacoes })
   }
