@@ -2,6 +2,9 @@ const database = require('../database/database')
 const {
   getCoords
 } = require('../utils/geocoding')
+const {
+  where
+} = require('../database/database')
 
 
 module.exports = {
@@ -16,6 +19,18 @@ module.exports = {
         .where('idBancoSangue', banco.idBancoSangue)
         .pluck('numeroTelefoneBanco')
 
+      const horarios = await database('tbHorarioFuncionamentoBancoSangue')
+        .where('tbHorarioFuncionamentoBancoSangue.idBancoSangue', banco.idBancoSangue)
+        .join('tbDiaSemana', {
+          'tbHorarioFuncionamentoBancoSangue.idDiaSemana': 'tbDiaSemana.idDiaSemana'
+        })
+        .select([
+          'tbDiaSemana.descricaoDiaSemana',
+          'tbHorarioFuncionamentoBancoSangue.horarioAbertura',
+          'tbHorarioFuncionamentoBancoSangue.horarioFechamento'
+        ])
+
+      banco.horarioFuncionamento = horarios
       banco.numeroTelefoneBanco = phoneNumbers
       banco.coords =
         await getCoords(banco.cepBancoSangue, banco.numeroEndBancoSangue)
@@ -37,6 +52,18 @@ module.exports = {
       .where('idBancoSangue', id)
       .pluck('numeroTelefoneBanco')
 
+    let horarios = await database('tbHorarioFuncionamentoBancoSangue')
+      .where('tbHorarioFuncionamentoBancoSangue.idBancoSangue', id)
+      .join('tbDiaSemana', {
+        'tbHorarioFuncionamentoBancoSangue.idDiaSemana': 'tbDiaSemana.idDiaSemana'
+      })
+      .select([
+        'tbDiaSemana.descricaoDiaSemana',
+        'tbHorarioFuncionamentoBancoSangue.horarioAbertura',
+        'tbHorarioFuncionamentoBancoSangue.horarioFechamento'
+      ])
+
+    banco.horarioFuncionamento = horarios
     banco.coords =
       await getCoords(banco.cepBancoSangue, banco.numeroEndBancoSangue)
 

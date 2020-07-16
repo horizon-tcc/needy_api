@@ -43,6 +43,9 @@ module.exports = {
       .select('tbSexo.descricaoSexo')
       .first()
 
+
+    let totalLitrosDoados = 0
+
     for (const doacao of doacoes) {
       // get percent to blood reload
       const presentDate = moment()
@@ -127,9 +130,11 @@ module.exports = {
         doacao.descricaoUnidadeMedida = 'Litros (l)'
       }
 
+      totalLitrosDoados += doacao.totalDoacao
+
     }
 
 
-    return res.status(200).json(doacoes)
+    return res.status(200).json({ totalLitrosDoados, doacoes })
   }
 }
