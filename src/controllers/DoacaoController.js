@@ -126,11 +126,11 @@ module.exports = {
       doacao.dataDoacaoFormatted = `${dateFormatted[0]}/${dateFormatted[1]}`
 
       if (doacao.descricaoUnidadeMedida === 'Mililitro (ml)') {
-        doacao.totalDoacao = Math.round(400 / 1000)
+        doacao.totalDoacao = 400 / 1000
         doacao.descricaoUnidadeMedida = 'Litros (l)'
       }
 
-      totalLitrosDoados += doacao.totalDoacao
+      totalLitrosDoados += doacao.totalDoacao.toFixed(1)
 
     }
 
